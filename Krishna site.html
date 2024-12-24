@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to My AI Chatbot</h1>
+    <div>
+        <textarea id="userInput" placeholder="Type your question here"></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <p id="botResponse"></p>
+
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById("userInput").value;
+            const responseElement = document.getElementById("botResponse");
+
+            try {
+                const response = await axios.post('https://api.openai.com/v1/completions', {
+                    prompt: userMessage,
+                    model: "text-davinci-003",
+                    max_tokens: 100,
+                    temperature: 0.7
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer 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'
+                    }
+                });
+
+                responseElement.textContent = response.data.choices[0].text;
+            } catch (error) {
+                responseElement.textContent = "Sorry, something went wrong.";
+            }
+        }
+    </script>
+</body>
+</html>
